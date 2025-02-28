@@ -65071,6 +65071,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.bnt_Flowana = null;
       this.bnt_Plant = null;
       this.WebPanel2 = null;
+      this.btn_release = null;
     };
     this.$final = function () {
       this.BWSphinxLogin = undefined;
@@ -65085,7 +65086,18 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.bnt_Flowana = undefined;
       this.bnt_Plant = undefined;
       this.WebPanel2 = undefined;
+      this.btn_release = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
+    };
+    this.btn_releaseClick = async function (Sender) {
+      var LRes = null;
+      this.WebHttpRequest1.FURL = pas.LoginU.baseURL + "release&" + pas.LoginU.LicID;
+      this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
+      this.WebHttpRequest1.FHeaders.AddPair("Authorization",pas.LoginU.fBearer);
+      LRes = await this.WebHttpRequest1.Perform();
+      if (LRes.status === 200) {
+        this.L_Info.SetText(LRes.responseText);
+      };
     };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
@@ -65099,6 +65111,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.bnt_Flowana = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.bnt_Plant = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.bnt_Scada = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.btn_release = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.BWSphinxLogin = pas["Sphinx.WebLogin"].TSphinxWebLogin.$create("Create$1",[this]);
       this.WebHttpRequest1 = pas["WEBLib.REST"].THttpRequest.$create("Create$1",[this]);
       this.l_UserID.BeforeLoadDFMValues();
@@ -65111,6 +65124,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.bnt_Flowana.BeforeLoadDFMValues();
       this.bnt_Plant.BeforeLoadDFMValues();
       this.bnt_Scada.BeforeLoadDFMValues();
+      this.btn_release.BeforeLoadDFMValues();
       this.BWSphinxLogin.BeforeLoadDFMValues();
       this.WebHttpRequest1.BeforeLoadDFMValues();
       try {
@@ -65137,9 +65151,9 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel1.SetParentComponent(this);
         this.WebPanel1.SetName("WebPanel1");
         this.WebPanel1.SetLeft(0);
-        this.WebPanel1.SetTop(225);
+        this.WebPanel1.SetTop(145);
         this.WebPanel1.SetWidth(1813);
-        this.WebPanel1.SetHeight(1101);
+        this.WebPanel1.SetHeight(1181);
         this.WebPanel1.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.WebPanel1.SetChildOrderEx(1);
         this.WebPanel1.SetColor(16777215);
@@ -65207,7 +65221,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.L_Info.SetLeft(0);
         this.L_Info.SetTop(476);
         this.L_Info.SetWidth(1813);
-        this.L_Info.SetHeight(625);
+        this.L_Info.SetHeight(705);
         this.L_Info.SetAlign(pas["WEBLib.Controls"].TAlign.alClient);
         this.L_Info.FFont.FCharset = 1;
         this.L_Info.FFont.SetColor(65793);
@@ -65231,7 +65245,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel2.SetLeft(0);
         this.WebPanel2.SetTop(27);
         this.WebPanel2.SetWidth(1813);
-        this.WebPanel2.SetHeight(198);
+        this.WebPanel2.SetHeight(118);
         this.WebPanel2.SetAlign(pas["WEBLib.Controls"].TAlign.alTop);
         this.WebPanel2.SetChildOrderEx(2);
         this.WebPanel2.SetTabOrder(1);
@@ -65241,7 +65255,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Flowana.SetLeft(3);
         this.bnt_Flowana.SetTop(3);
         this.bnt_Flowana.SetWidth(200);
-        this.bnt_Flowana.SetHeight(192);
+        this.bnt_Flowana.SetHeight(112);
         this.bnt_Flowana.SetAlign(pas["WEBLib.Controls"].TAlign.alLeft);
         this.bnt_Flowana.SetCaption("Flow analysis");
         this.bnt_Flowana.FFont.FCharset = 1;
@@ -65258,7 +65272,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Plant.SetLeft(209);
         this.bnt_Plant.SetTop(3);
         this.bnt_Plant.SetWidth(200);
-        this.bnt_Plant.SetHeight(192);
+        this.bnt_Plant.SetHeight(112);
         this.bnt_Plant.SetAlign(pas["WEBLib.Controls"].TAlign.alLeft);
         this.bnt_Plant.SetCaption("Plant");
         this.bnt_Plant.SetChildOrderEx(1);
@@ -65276,7 +65290,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Scada.SetLeft(415);
         this.bnt_Scada.SetTop(3);
         this.bnt_Scada.SetWidth(200);
-        this.bnt_Scada.SetHeight(192);
+        this.bnt_Scada.SetHeight(112);
         this.bnt_Scada.SetAlign(pas["WEBLib.Controls"].TAlign.alLeft);
         this.bnt_Scada.SetCaption("Scada");
         this.bnt_Scada.SetChildOrderEx(2);
@@ -65288,6 +65302,25 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Scada.SetHeightPercent(100.000000000000000000);
         this.bnt_Scada.SetParentFont(false);
         this.bnt_Scada.SetWidthPercent(100.000000000000000000);
+        this.btn_release.SetParentComponent(this.WebPanel2);
+        this.btn_release.SetName("btn_release");
+        this.btn_release.SetAlignWithMargins(true);
+        this.btn_release.SetLeft(1584);
+        this.btn_release.SetTop(3);
+        this.btn_release.SetWidth(226);
+        this.btn_release.SetHeight(112);
+        this.btn_release.SetAlign(pas["WEBLib.Controls"].TAlign.alRight);
+        this.btn_release.SetCaption("Release license");
+        this.btn_release.SetChildOrderEx(2);
+        this.btn_release.FFont.FCharset = 1;
+        this.btn_release.FFont.SetColor(65793);
+        this.btn_release.FFont.SetHeight(-16);
+        this.btn_release.FFont.SetName("Segoe UI");
+        this.btn_release.FFont.SetStyle({});
+        this.btn_release.SetHeightPercent(100.000000000000000000);
+        this.btn_release.SetParentFont(false);
+        this.btn_release.SetWidthPercent(100.000000000000000000);
+        this.SetEvent$1(this.btn_release,this,"OnClick","btn_releaseClick");
         this.BWSphinxLogin.SetParentComponent(this);
         this.BWSphinxLogin.SetName("BWSphinxLogin");
         this.BWSphinxLogin.SetAuthority("https://envirosim.evaluation.10duke.net");
@@ -65318,6 +65351,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Flowana.AfterLoadDFMValues();
         this.bnt_Plant.AfterLoadDFMValues();
         this.bnt_Scada.AfterLoadDFMValues();
+        this.btn_release.AfterLoadDFMValues();
         this.BWSphinxLogin.AfterLoadDFMValues();
         this.WebHttpRequest1.AfterLoadDFMValues();
       };
@@ -65337,13 +65371,14 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addField("bnt_Flowana",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("bnt_Plant",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("WebPanel2",pas["WEBLib.ExtCtrls"].$rtti["TPanel"]);
+    $r.addField("btn_release",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addMethod("btn_releaseClick",0,[["Sender",pas.System.$rtti["TObject"]]],null,16,{attr: [pas.JS.AsyncAttribute,"Create"]});
   });
   this.Main = null;
 },["LoginU"]);
-rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.StdCtrls","WEBLib.StdCtrls","Sparkle.Utils","Sphinx.WebLogin","WEBLib.ExtCtrls","WEBLib.REST"],function () {
+rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","WEBLib.Controls","WEBLib.Forms","WEBLib.Dialogs","WEBLib.Controls","WEBLib.StdCtrls","WEBLib.StdCtrls","Sparkle.Utils","WEBLib.JSON","Sphinx.WebLogin","WEBLib.ExtCtrls","WEBLib.REST"],function () {
   "use strict";
   var $mod = this;
-  var $impl = $mod.$impl;
   rtl.createClass(this,"TLogin",pas["WEBLib.Forms"].TForm,function () {
     this.$init = function () {
       pas["WEBLib.Forms"].TForm.$init.call(this);
@@ -65387,16 +65422,21 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
     };
     this.CheckLicense = async function (AForm) {
       var LRes = null;
+      var CurJSONObj = null;
+      var JSONStr = null;
       if (this.BWSphinxLogin.IsLoggedIn()) {
         if (this.BWSphinxLogin.AuthResult().IsExpired()) {
           this.BWSphinxLogin.Login();
         };
-        this.WebHttpRequest1.FURL = $impl.baseURL + "BioTwin&hw=T29qb1RoYWU3aWV6MENoYWlkaWUyZXRoMWphMmFoQmUK";
+        this.WebHttpRequest1.FURL = $mod.baseURL + "BioTwin&hw=T29qb1RoYWU3aWV6MENoYWlkaWUyZXRoMWphMmFoQmUK";
         this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
         this.WebHttpRequest1.FHeaders.AddPair("Authorization",$mod.fBearer);
         LRes = await this.WebHttpRequest1.Perform();
         if (LRes.status === 200) {
-          AForm.L_Info.SetText(LRes.responseText);
+          CurJSONObj = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONObject);
+          AForm.L_Info.SetText(CurJSONObj.ToString());
+          JSONStr = rtl.as(CurJSONObj.GetValue$1("lic"),pas["WEBLib.JSON"].TJSONString);
+          if (JSONStr != null) $mod.LicID = JSONStr.GetStrValue();
         };
       };
     };
@@ -65509,9 +65549,8 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
   this.Login = null;
   this.fAccessToken = "";
   this.fBearer = "";
-  $mod.$implcode = function () {
-    $impl.baseURL = "https://envirosim.evaluation.10duke.net/authz/.json?";
-  };
+  this.LicID = "";
+  this.baseURL = "https://envirosim.evaluation.10duke.net/authz/.json?";
 },["MainU"]);
 rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","LoginU","MainU"],function () {
   "use strict";
