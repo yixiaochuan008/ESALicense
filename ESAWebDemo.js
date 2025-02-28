@@ -65439,7 +65439,7 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         this.BWSphinxLogin.SetAuthority("https://envirosim.evaluation.10duke.net");
         this.BWSphinxLogin.SetClientId("79w1-6s41-4s7x-8e96-76u988gs1");
         this.BWSphinxLogin.FScope = "openid email profile";
-        this.BWSphinxLogin.FRedirectUri = "http://localhost:8000/ESAWebDemo/Project2.html";
+        this.BWSphinxLogin.FRedirectUri = "http://localhost:8000/ESAWebDemo/index.html";
         this.SetEvent$1(this.BWSphinxLogin,this,"OnUserLoggedIn","BWSphinxLoginUserLoggedIn");
         this.BWSphinxLogin.SetLeft(168);
         this.BWSphinxLogin.SetTop(120);
