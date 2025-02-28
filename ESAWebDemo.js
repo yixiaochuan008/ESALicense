@@ -65092,6 +65092,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     this.btn_releaseClick = async function (Sender) {
       var LRes = null;
       this.WebHttpRequest1.FURL = pas.LoginU.baseURL + "release&" + pas.LoginU.LicID;
+      pas["WEBLib.Dialogs"].ShowMessage(this.WebHttpRequest1.FURL);
       this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
       this.WebHttpRequest1.FHeaders.AddPair("Authorization",pas.LoginU.fBearer);
       LRes = await this.WebHttpRequest1.Perform();
