@@ -65091,7 +65091,7 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     };
     this.btn_releaseClick = async function (Sender) {
       var LRes = null;
-      this.WebHttpRequest1.FURL = pas.LoginU.baseURL + "release&" + pas.LoginU.LicID;
+      this.WebHttpRequest1.FURL = pas.LoginU.baseURL + "release&" + pas.LoginU.leaseID;
       pas["WEBLib.Dialogs"].ShowMessage(this.WebHttpRequest1.FURL);
       this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
       this.WebHttpRequest1.FHeaders.AddPair("Authorization",pas.LoginU.fBearer);
@@ -65436,8 +65436,8 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         if (LRes.status === 200) {
           CurJSONObj = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONObject);
           AForm.L_Info.SetText(CurJSONObj.ToString());
-          JSONStr = rtl.as(CurJSONObj.GetValue$1("lic"),pas["WEBLib.JSON"].TJSONString);
-          if (JSONStr != null) $mod.LicID = JSONStr.GetStrValue();
+          JSONStr = rtl.as(CurJSONObj.GetValue$1("jti"),pas["WEBLib.JSON"].TJSONString);
+          if (JSONStr != null) $mod.leaseID = JSONStr.GetStrValue();
         };
       };
     };
@@ -65550,7 +65550,7 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
   this.Login = null;
   this.fAccessToken = "";
   this.fBearer = "";
-  this.LicID = "";
+  this.leaseID = "";
   this.baseURL = "https://envirosim.evaluation.10duke.net/authz/.json?";
 },["MainU"]);
 rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","LoginU","MainU"],function () {
