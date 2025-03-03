@@ -65067,11 +65067,12 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.L_Info = null;
       this.WebLabel1 = null;
       this.WebLabel2 = null;
-      this.bnt_Scada = null;
       this.bnt_Flowana = null;
       this.bnt_Plant = null;
       this.WebPanel2 = null;
       this.btn_release = null;
+      this.fHasBioTwinLic = false;
+      this.fHasFLowAnaLic = false;
     };
     this.$final = function () {
       this.BWSphinxLogin = undefined;
@@ -65082,7 +65083,6 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.L_Info = undefined;
       this.WebLabel1 = undefined;
       this.WebLabel2 = undefined;
-      this.bnt_Scada = undefined;
       this.bnt_Flowana = undefined;
       this.bnt_Plant = undefined;
       this.WebPanel2 = undefined;
@@ -65091,7 +65091,14 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     };
     this.btn_releaseClick = async function (Sender) {
       var LRes = null;
-      this.WebHttpRequest1.FURL = pas.LoginU.baseURL + "release&" + pas.LoginU.leaseID;
+      var leaseIDStr = "";
+      var i = 0;
+      leaseIDStr = "&";
+      for (var $l = 0, $end = rtl.length(pas.LoginU.leaseID) - 1; $l <= $end; $l++) {
+        i = $l;
+        leaseIDStr = leaseIDStr + "&" + pas.LoginU.leaseID[i];
+      };
+      this.WebHttpRequest1.FURL = pas.LoginU.baseURL + "release" + leaseIDStr;
       pas["WEBLib.Dialogs"].ShowMessage(this.WebHttpRequest1.FURL);
       this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
       this.WebHttpRequest1.FHeaders.AddPair("Authorization",pas.LoginU.fBearer);
@@ -65099,6 +65106,14 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       if (LRes.status === 200) {
         this.L_Info.SetText(LRes.responseText);
       };
+    };
+    this.SetHasBioTwinLic = function (aVal) {
+      this.fHasBioTwinLic = aVal;
+      this.bnt_Plant.SetEnabled(this.fHasBioTwinLic);
+    };
+    this.SetHasFLowAnaLic = function (aVal) {
+      this.fHasFLowAnaLic = aVal;
+      this.bnt_Flowana.SetEnabled(this.fHasFLowAnaLic);
     };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
@@ -65111,7 +65126,6 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebPanel2 = pas["WEBLib.ExtCtrls"].TPanel.$create("Create$1",[this]);
       this.bnt_Flowana = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.bnt_Plant = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
-      this.bnt_Scada = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.btn_release = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
       this.BWSphinxLogin = pas["Sphinx.WebLogin"].TSphinxWebLogin.$create("Create$1",[this]);
       this.WebHttpRequest1 = pas["WEBLib.REST"].THttpRequest.$create("Create$1",[this]);
@@ -65124,7 +65138,6 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebPanel2.BeforeLoadDFMValues();
       this.bnt_Flowana.BeforeLoadDFMValues();
       this.bnt_Plant.BeforeLoadDFMValues();
-      this.bnt_Scada.BeforeLoadDFMValues();
       this.btn_release.BeforeLoadDFMValues();
       this.BWSphinxLogin.BeforeLoadDFMValues();
       this.WebHttpRequest1.BeforeLoadDFMValues();
@@ -65253,12 +65266,13 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Flowana.SetParentComponent(this.WebPanel2);
         this.bnt_Flowana.SetName("bnt_Flowana");
         this.bnt_Flowana.SetAlignWithMargins(true);
-        this.bnt_Flowana.SetLeft(3);
+        this.bnt_Flowana.SetLeft(209);
         this.bnt_Flowana.SetTop(3);
         this.bnt_Flowana.SetWidth(200);
         this.bnt_Flowana.SetHeight(112);
         this.bnt_Flowana.SetAlign(pas["WEBLib.Controls"].TAlign.alLeft);
         this.bnt_Flowana.SetCaption("Flow analysis");
+        this.bnt_Flowana.SetEnabled(false);
         this.bnt_Flowana.FFont.FCharset = 1;
         this.bnt_Flowana.FFont.SetColor(65793);
         this.bnt_Flowana.FFont.SetHeight(-16);
@@ -65270,13 +65284,14 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Plant.SetParentComponent(this.WebPanel2);
         this.bnt_Plant.SetName("bnt_Plant");
         this.bnt_Plant.SetAlignWithMargins(true);
-        this.bnt_Plant.SetLeft(209);
+        this.bnt_Plant.SetLeft(3);
         this.bnt_Plant.SetTop(3);
         this.bnt_Plant.SetWidth(200);
         this.bnt_Plant.SetHeight(112);
         this.bnt_Plant.SetAlign(pas["WEBLib.Controls"].TAlign.alLeft);
         this.bnt_Plant.SetCaption("Plant");
         this.bnt_Plant.SetChildOrderEx(1);
+        this.bnt_Plant.SetEnabled(false);
         this.bnt_Plant.FFont.FCharset = 1;
         this.bnt_Plant.FFont.SetColor(65793);
         this.bnt_Plant.FFont.SetHeight(-16);
@@ -65285,24 +65300,6 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.bnt_Plant.SetHeightPercent(100.000000000000000000);
         this.bnt_Plant.SetParentFont(false);
         this.bnt_Plant.SetWidthPercent(100.000000000000000000);
-        this.bnt_Scada.SetParentComponent(this.WebPanel2);
-        this.bnt_Scada.SetName("bnt_Scada");
-        this.bnt_Scada.SetAlignWithMargins(true);
-        this.bnt_Scada.SetLeft(415);
-        this.bnt_Scada.SetTop(3);
-        this.bnt_Scada.SetWidth(200);
-        this.bnt_Scada.SetHeight(112);
-        this.bnt_Scada.SetAlign(pas["WEBLib.Controls"].TAlign.alLeft);
-        this.bnt_Scada.SetCaption("Scada");
-        this.bnt_Scada.SetChildOrderEx(2);
-        this.bnt_Scada.FFont.FCharset = 1;
-        this.bnt_Scada.FFont.SetColor(65793);
-        this.bnt_Scada.FFont.SetHeight(-16);
-        this.bnt_Scada.FFont.SetName("Segoe UI");
-        this.bnt_Scada.FFont.SetStyle({});
-        this.bnt_Scada.SetHeightPercent(100.000000000000000000);
-        this.bnt_Scada.SetParentFont(false);
-        this.bnt_Scada.SetWidthPercent(100.000000000000000000);
         this.btn_release.SetParentComponent(this.WebPanel2);
         this.btn_release.SetName("btn_release");
         this.btn_release.SetAlignWithMargins(true);
@@ -65351,7 +65348,6 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebPanel2.AfterLoadDFMValues();
         this.bnt_Flowana.AfterLoadDFMValues();
         this.bnt_Plant.AfterLoadDFMValues();
-        this.bnt_Scada.AfterLoadDFMValues();
         this.btn_release.AfterLoadDFMValues();
         this.BWSphinxLogin.AfterLoadDFMValues();
         this.WebHttpRequest1.AfterLoadDFMValues();
@@ -65368,7 +65364,6 @@ rtl.module("MainU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     $r.addField("L_Info",pas["WEBLib.StdCtrls"].$rtti["TMemo"]);
     $r.addField("WebLabel1",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
     $r.addField("WebLabel2",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
-    $r.addField("bnt_Scada",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("bnt_Flowana",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("bnt_Plant",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
     $r.addField("WebPanel2",pas["WEBLib.ExtCtrls"].$rtti["TPanel"]);
@@ -65401,7 +65396,6 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
       this.BWSphinxLogin.Login();
     };
     this.BWSphinxLoginUserLoggedIn = function (Args) {
-      debugger;
       if (this.BWSphinxLogin.IsLoggedIn()) {
         this.loginpanel.SetVisible(false);
         this.mainpanel.SetVisible(true);
@@ -65425,19 +65419,47 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
       var LRes = null;
       var CurJSONObj = null;
       var JSONStr = null;
+      var CurJSONArr = null;
+      var i = 0;
+      var JSONBool = null;
       if (this.BWSphinxLogin.IsLoggedIn()) {
         if (this.BWSphinxLogin.AuthResult().IsExpired()) {
           this.BWSphinxLogin.Login();
         };
-        this.WebHttpRequest1.FURL = $mod.baseURL + "BioTwin&hw=T29qb1RoYWU3aWV6MENoYWlkaWUyZXRoMWphMmFoQmUK";
+        this.WebHttpRequest1.FURL = $mod.baseURL + "BioTwin&Flow analysis&hw=T29qb1RoYWU3aWV6MENoYWlkaWUyZXRoMWphMmFoQmUK";
         this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
         this.WebHttpRequest1.FHeaders.AddPair("Authorization",$mod.fBearer);
         LRes = await this.WebHttpRequest1.Perform();
         if (LRes.status === 200) {
-          CurJSONObj = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONObject);
-          AForm.L_Info.SetText(CurJSONObj.ToString());
-          JSONStr = rtl.as(CurJSONObj.GetValue$1("jti"),pas["WEBLib.JSON"].TJSONString);
-          if (JSONStr != null) $mod.leaseID = JSONStr.GetStrValue();
+          try {
+            window.console.log(LRes.responseText);
+            CurJSONObj = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONObject);
+            AForm.L_Info.SetText(CurJSONObj.ToString());
+            JSONStr = rtl.as(CurJSONObj.GetValue$1("jti"),pas["WEBLib.JSON"].TJSONString);
+            if (JSONStr != null) {
+              $mod.leaseID = rtl.arraySetLength($mod.leaseID,"",1);
+              $mod.leaseID[0] = JSONStr.GetStrValue();
+              JSONBool = rtl.as(CurJSONObj.GetValue$1("BioTwin"),pas["WEBLib.JSON"].TJSONValue);
+              if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(true);
+              if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(false);
+            };
+          } catch ($e) {
+            CurJSONArr = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONArray);
+            AForm.L_Info.SetText(CurJSONArr.ToString());
+            $mod.leaseID = rtl.arraySetLength($mod.leaseID,"",CurJSONArr.GetCount());
+            for (var $l = 0, $end = CurJSONArr.GetCount() - 1; $l <= $end; $l++) {
+              i = $l;
+              CurJSONObj = rtl.as(CurJSONArr.GetItem(i),pas["WEBLib.JSON"].TJSONObject);
+              JSONStr = rtl.as(CurJSONObj.GetValue$1("jti"),pas["WEBLib.JSON"].TJSONString);
+              if (JSONStr != null) $mod.leaseID[i] = JSONStr.GetStrValue();
+              JSONBool = rtl.as(CurJSONObj.GetValue$1("BioTwin"),pas["WEBLib.JSON"].TJSONValue);
+              if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(true);
+              if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(false);
+              JSONBool = rtl.as(CurJSONObj.GetValue$1("Flow analysis"),pas["WEBLib.JSON"].TJSONValue);
+              if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasFLowAnaLic(true);
+              if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasFLowAnaLic(false);
+            };
+          };
         };
       };
     };
@@ -65460,6 +65482,7 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         AForm.m_Info.FLines.Add("Id token: " + this.BWSphinxLogin.AuthResult().GetIdToken());
         AForm.m_Info.FLines.Add("Access token: " + this.BWSphinxLogin.AuthResult().GetAccessToken());
         AForm.m_Info.FLines.Add("==========");
+        window.console.log(this.BWSphinxLogin.AuthResult().GetAccessToken());
       };
     };
     this.LoadDFMValues = function () {
@@ -65512,7 +65535,7 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         this.BWSphinxLogin.SetAuthority("https://envirosim.evaluation.10duke.net");
         this.BWSphinxLogin.SetClientId("79w1-6s41-4s7x-8e96-76u988gs1");
         this.BWSphinxLogin.FScope = "openid email profile";
-        this.BWSphinxLogin.FRedirectUri = "https://yixiaochuan008.github.io/ESALicense/index.html";
+        this.BWSphinxLogin.FRedirectUri = "http://localhost:8000/ESAWebDemo/index.html";
         this.SetEvent$1(this.BWSphinxLogin,this,"OnUserLoggedIn","BWSphinxLoginUserLoggedIn");
         this.BWSphinxLogin.SetLeft(168);
         this.BWSphinxLogin.SetTop(120);
@@ -65550,7 +65573,8 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
   this.Login = null;
   this.fAccessToken = "";
   this.fBearer = "";
-  this.leaseID = "";
+  this.$rtti.$DynArray("leaseID$a",{eltype: rtl.string});
+  this.leaseID = [];
   this.baseURL = "https://envirosim.evaluation.10duke.net/authz/.json?";
 },["MainU"]);
 rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","LoginU","MainU"],function () {
