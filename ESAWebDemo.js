@@ -65426,39 +65426,26 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
         if (this.BWSphinxLogin.AuthResult().IsExpired()) {
           this.BWSphinxLogin.Login();
         };
-        this.WebHttpRequest1.FURL = $mod.baseURL + "BioTwin&Flow analysis&hw=T29qb1RoYWU3aWV6MENoYWlkaWUyZXRoMWphMmFoQmUK";
+        this.WebHttpRequest1.FURL = $mod.baseURL + $mod.BioTwinLicItem + "&" + $mod.BioTwinAndFALicItem + "&hw=T29qb1RoYWU3aWV6MENoYWlkaWUyZXRoMWphMmFoQmUK";
         this.WebHttpRequest1.FCommand = pas["WEBLib.REST"].THTTPCommand.httpGET;
         this.WebHttpRequest1.FHeaders.AddPair("Authorization",$mod.fBearer);
         LRes = await this.WebHttpRequest1.Perform();
         if (LRes.status === 200) {
-          try {
-            window.console.log(LRes.responseText);
-            CurJSONObj = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONObject);
-            AForm.L_Info.SetText(CurJSONObj.ToString());
+          window.console.log(LRes.responseText);
+          CurJSONArr = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONArray);
+          AForm.L_Info.SetText(CurJSONArr.ToString());
+          $mod.leaseID = rtl.arraySetLength($mod.leaseID,"",CurJSONArr.GetCount());
+          for (var $l = 0, $end = CurJSONArr.GetCount() - 1; $l <= $end; $l++) {
+            i = $l;
+            CurJSONObj = rtl.as(CurJSONArr.GetItem(i),pas["WEBLib.JSON"].TJSONObject);
             JSONStr = rtl.as(CurJSONObj.GetValue$1("jti"),pas["WEBLib.JSON"].TJSONString);
-            if (JSONStr != null) {
-              $mod.leaseID = rtl.arraySetLength($mod.leaseID,"",1);
-              $mod.leaseID[0] = JSONStr.GetStrValue();
-              JSONBool = rtl.as(CurJSONObj.GetValue$1("BioTwin"),pas["WEBLib.JSON"].TJSONValue);
-              if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(true);
-              if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(false);
-            };
-          } catch ($e) {
-            CurJSONArr = rtl.as(pas["WEBLib.JSON"].TJSONObject.ParseJSONValue(LRes.responseText),pas["WEBLib.JSON"].TJSONArray);
-            AForm.L_Info.SetText(CurJSONArr.ToString());
-            $mod.leaseID = rtl.arraySetLength($mod.leaseID,"",CurJSONArr.GetCount());
-            for (var $l = 0, $end = CurJSONArr.GetCount() - 1; $l <= $end; $l++) {
-              i = $l;
-              CurJSONObj = rtl.as(CurJSONArr.GetItem(i),pas["WEBLib.JSON"].TJSONObject);
-              JSONStr = rtl.as(CurJSONObj.GetValue$1("jti"),pas["WEBLib.JSON"].TJSONString);
-              if (JSONStr != null) $mod.leaseID[i] = JSONStr.GetStrValue();
-              JSONBool = rtl.as(CurJSONObj.GetValue$1("BioTwin"),pas["WEBLib.JSON"].TJSONValue);
-              if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(true);
-              if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(false);
-              JSONBool = rtl.as(CurJSONObj.GetValue$1("Flow analysis"),pas["WEBLib.JSON"].TJSONValue);
-              if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasFLowAnaLic(true);
-              if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasFLowAnaLic(false);
-            };
+            if (JSONStr != null) $mod.leaseID[i] = JSONStr.GetStrValue();
+            JSONBool = rtl.as(CurJSONObj.GetValue$1($mod.BioTwinLicItem),pas["WEBLib.JSON"].TJSONValue);
+            if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(true);
+            if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasBioTwinLic(false);
+            JSONBool = rtl.as(CurJSONObj.GetValue$1($mod.BioTwinAndFALicItem),pas["WEBLib.JSON"].TJSONValue);
+            if (pas["WEBLib.JSON"].TJSONTrue.isPrototypeOf(JSONBool)) AForm.SetHasFLowAnaLic(true);
+            if (pas["WEBLib.JSON"].TJSONFalse.isPrototypeOf(JSONBool)) AForm.SetHasFLowAnaLic(false);
           };
         };
       };
@@ -65576,6 +65563,8 @@ rtl.module("LoginU",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics",
   this.$rtti.$DynArray("leaseID$a",{eltype: rtl.string});
   this.leaseID = [];
   this.baseURL = "https://envirosim.evaluation.10duke.net/authz/.json?";
+  this.BioTwinLicItem = "BioTwin";
+  this.BioTwinAndFALicItem = "BioTwinAndFlowAnalysis";
 },["MainU"]);
 rtl.module("program",["System","WEBLib.Forms","WEBLib.Forms","LoginU","MainU"],function () {
   "use strict";
